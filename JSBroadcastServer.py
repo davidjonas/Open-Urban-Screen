@@ -25,7 +25,7 @@ def get(req, domain, key):
 	builtMetaKey = '%(domain)s_%(key)s_meta' % {'domain': domain, 'key':key}
 	cur = 0
 	mem = _getMemAccess()
-	timestamp = mem.get("user_" + userId)
+	timestamp = mem.get(domain + "_" + key + "_" + userId)
 	if timestamp is None:
 		timestamp = _now()
 	stackSize = _getMessageStackSize(mem, domain)
@@ -43,7 +43,7 @@ def get(req, domain, key):
 		newTime = msgTime
 		cur = cur + 1
 		msg=mem.get('%(key)s%(cur)d' % {'key': builtMetaKey, 'cur': cur})
-	mem.set("user_" + userId, newTime)
+	mem.set(domain + "_" + key + "_" + userId, newTime)
 	json = "["
 	for item in result:
 		if json == "[":

@@ -1,0 +1,62 @@
+*{
+	padding:0px;
+	margin:0px;
+	/*border:1px #cccccc solid;*/
+}
+
+#globalWrapper
+{
+	width: 999px;
+	margin:auto;
+}
+
+#chat
+{
+
+}
+
+#stream
+{
+	float:left;
+	margin-right:10px;
+}
+
+#chatWindow
+{
+	height:557px;
+	overflow-x:normal;
+	overflow-y:auto;
+}
+
+#messageInput
+{
+
+}
+
+#intk
+{
+	position:absolute;
+	bottom:0;
+	left:0;
+	padding:5px;
+	font-family: helvetica,arial,freesans,clean,sans-serif;
+	font-size:10px;
+}
+
+#intk a, #intk a:visited, #intk a:active
+{
+	color:black;
+	text-decoration:none;
+} 
+
+#intk a:hover
+{
+	text-decoration:underline;
+}
+
+#intk .intk_n
+{
+	text-decoration:line-through;
+	color: red; 
+}
+
