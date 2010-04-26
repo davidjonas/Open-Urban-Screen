@@ -28,7 +28,7 @@ def get(req, domain, key):
 	timestamp = mem.get(domain + "_" + key + "_" + userId)
 	if timestamp is None:
 		timestamp = _now()
-	stackSize = _getMessageStackSize(mem, domain)
+	stackSize = _getMessageStackSize(mem, domain, key)
 	result = []
 	newTime = 0
 
@@ -59,16 +59,16 @@ def get(req, domain, key):
 def send(req, domain, key, msg):
 	mem = _getMemAccess()
 	timestamp = _now()
-	
+
 	userId = _getSessionId(req)
 	newKey = '%(domain)s_%(key)s_%(timestamp).4f' % {'domain': domain, 'key': key, 'timestamp':timestamp}
-	mem.set(newKey, msg)
+	mem.set(newKey, "%s" % (msg))
 
 	newMetaValue = '%(uid)s&%(timestamp).4f' %  {'uid': userId, 'timestamp':timestamp}
-	id = _newMessageIndex(mem, domain)
+	id = _newMessageIndex(mem, domain, key)
 	newMetaKey = '%(domain)s_%(key)s_meta%(id)d' % {'domain': domain, 'key': key, 'id':id}
 	mem.set(newMetaKey, newMetaValue)
-	
+
 	req.content_type = "text/json"
 	req.write("%.4f" % timestamp)
 	
@@ -83,19 +83,20 @@ def retrieve(key):
 def _now():
 	return time.time()
 	
-def _newMessageIndex(mem, domain):
-	messageStackSize = mem.get(domain + '_messageStackSize')
+def _newMessageIndex(mem, domain, key):
+	messageStackSize = mem.get(domain + '_' + key + '_messageStackSize')
 	if messageStackSize is None:
-		mem.set(domain + '_messageStackSize', 0)
+		mem.set(domain + '_' + key + '_messageStackSize', 0)
 		return 0
 	else:
 		if (messageStackSize >= 100):
 			mem.flush_all()
+			mem.disconnect_all()
 			return 0
 		else:
-			mem.set(domain + '_messageStackSize', messageStackSize+1)
+			mem.set(domain +'_' + key + '_messageStackSize', messageStackSize+1)
 			return messageStackSize+1
 	
-def _getMessageStackSize(mem, domain):
-	return mem.get(domain + '_messageStackSize')
+def _getMessageStackSize(mem, domain, key):
+	return mem.get(domain + '_' + key + '_messageStackSize')
 		

@@ -1,42 +1,56 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Hello World</title>
+<title>Open Urban Screen</title>
+<script language="javascript" src="js/swfobject.js"> </script>
 <script language="javascript" src="js/jquery-1.4.2.min.js"> </script>
 <script language="javascript" src="js/JSBroadcast.min.js"> </script>
 <script language="javascript" src="js/chat.js"> </script>
+<script type="text/javascript">
+   var flashvars = {
+      'streamer':           'rtmp://encoder.v2.nl/oflaDemo',
+      'file':               'live_test',
+      'autostart':          'true',
+	  'shownavigation':		'false',
+	  'showdigits':			'false',
+	  'displayheight':		500
+   };
+
+   var params = {
+      'allowfullscreen':    'true',
+      'allowscriptaccess':  'always',
+      'bgcolor':            '#ffffff'
+   };
+
+   var attributes = {
+      'id':                 'flashPlayer',
+      'name':               'flashPlayer'
+   };
+
+   swfobject.embedSWF('player.swf', 'flashStream', '640', '500', '9', 'false', flashvars, params, attributes);
+</script>
 <link type="text/css" href="css/openscreen.css" rel="stylesheet" />
 </head>
 
 <body>
 <div id="globalWrapper" >
+<div class="location">
+Beamed at V2_lab office.<br />       
+<span class="discreet">(May 20th it will be beamed at Test_lab.)</span>
+</div>
 
 <div id="stream">
-    <img src="images/stub.png">
-	<!--OBJECT CLASSID="clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B" WIDTH="400"
-	HEIGHT="300" ALIGN="center" CODEBASE="http://www.apple.com/qtactivex/qtplugin.cab">
-		<PARAM name="SRC" VALUE="stream/link.mov">
-		<PARAM name="AUTOPLAY" VALUE="true">
-		<PARAM name="CONTROLLER" VALUE="false">
-		<PARAM name="SCALE" VALUE="1">
-		<EMBED SRC="stream/link.mov" WIDTH="768" HEIGHT="576" TYPE="video/quicktime"
-			ALIGN="center"
-			AUTOPLAY="true"
-			CONTROLLER="false"
-			SCALE="1"
-			PLUGINSPAGE="http://www.apple.com/quicktime/download/">
-		</EMBED>
-	</OBJECT -->
+<div id="flashStream"></div>
 </div>
 
 
 	<div id="chat">
-		<div id="chatWindow">Chat on...</div>
-		<form name="chat" id="messageInput" onsubmit="sendMessage(); return false;">
-        		<input id="chatMsg" type="text">
-            		<input value="Send" onclick="sendMessage()" type="button">
-					<input value="Beam" onclick="sendBeamMessage()" type="button">
+		<div id="chatWindow"></div>
+		<form name="chat" id="messageInput" onsubmit="JSChat.sendMessage(); JSBeam.sendMessage(); return false;">
+        		<input id="chatMsg" type="text"></textarea>
+				<input value="Beam" onclick="JSChat.sendMessage(); JSBeam.sendMessage();" type="button">
         	</form>
     		<script language="javascript">
         		runChat();

@@ -1,0 +1,68 @@
+*{
+	padding:0px;
+	margin:0px;
+}
+
+body
+{
+	background-color:black;
+	color:white;
+	font-family:Georgia,"Times New Roman",Times,serif;
+	font-style:italic;
+	overflow:hidden;
+}
+
+#chatWindow
+{
+	position:absolute;
+	font-size:40px;
+	opacity:0.6;
+	width:100%;
+	left:0;
+	bottom:0;
+	overflow-y:hidden;
+	color:#00ff00;
+	z-index:1;
+	font-family: monospace;
+}
+
+#beamWindow
+{
+	position:absolute;
+	left:10%;
+	bottom:0;
+	overflow:hidden;
+	z-index:2;
+	font-size: 80px;
+	margin-bottom:30px;
+	text-align:center;
+	width:80%;
+}
+
+#intk
+{
+	position:fixed;
+	bottom:0;
+	right:0;
+	padding:5px;
+	font-family: helvetica,arial,freesans,clean,sans-serif;
+	font-size:10px;
+}
+
+#intk a, #intk a:visited, #intk a:active
+{
+	color:white;
+	text-decoration:none;
+} 
+
+#intk a:hover
+{
+	text-decoration:underline;
+}
+
+#intk .intk_n
+{
+	text-decoration:line-through;
+	color: red; 
+}
+

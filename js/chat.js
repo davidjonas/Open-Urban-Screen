@@ -13,28 +13,109 @@ JSChat.updateChat = function()
 	{
 		for(var msg in messages)
 		{	
-			$(document.getElementById('chatWindow')).append("<br />" + messages[msg].msg);
+			if($('#chatWindow').html() == "")
+			{
+				JSChat.write(messages[msg].msg, false);
+			}
+			else
+			{
+				JSChat.write(messages[msg].msg, true);
+			}
 			JSChat.scrollDown();
 		}
 	}
 };
 
-JSBroadcast.configure({'domain': 'chat'});
+JSChat.write = function (msg, newline)
+{
+	var msgText = document.createElement('span');
+	var jqMsgObj = $(msgText);
+	jqMsgObj.text(msg); 
+	
+	if(newline)
+	{
+		var newline = document.createElement('br');
+		jqMsgObj.prepend(newline);
+	}
+	
+	$(document.getElementById('chatWindow')).append(jqMsgObj);
+}
+
+JSBroadcast.configure({'domain': 'openscreen'});
 JSBroadcast.registerReceiver(JSChat.chatRoom);
 JSBroadcast.registerFunction("updateChat", JSChat.updateChat);
 
-function sendMessage()
+JSChat.sendMessage = function ()
 {	
 	var chatMsg = document.getElementById('chatMsg');
 	var msg = chatMsg.value;
-	JSBroadcast.sendMessage(JSChat.chatRoom, msg);
-	chatMsg.value = "";
-	chatMsg.focus();
-	$(document.getElementById('chatWindow')).append("<BR />" + msg);
-	JSChat.scrollDown();
+	if(msg != "")
+	{
+		JSBroadcast.sendMessage(JSChat.chatRoom, msg);
+		//chatMsg.value = "";
+		chatMsg.focus();
+		if($('#chatWindow').html() == "")
+		{
+			JSChat.write(msg, false);
+		}
+		else
+		{
+			JSChat.write(msg, true);
+		}
+		
+		JSChat.scrollDown();
+	}
 }
+
+JSBeam = {};
+JSBeam.key = 'OpenScreenBeam';
+
+JSBeam.write = function (msg, newline)
+{
+	var beamingSpan = document.createElement('span');
+	var beamObj = $(beamingSpan);
+	beamObj.addClass('beamed');
+	beamObj.text('[Beaming in 5 secs]:');
+	var msgText = document.createElement('span');
+	var jqMsgObj = $(msgText);
+	jqMsgObj.text(msg); 
+	jqMsgObj.prepend(beamObj);
+	
+	if(newline)
+	{
+		var newline = document.createElement('br');
+		jqMsgObj.prepend(newline);
+	}
+	
+	$(document.getElementById('chatWindow')).append(jqMsgObj);
+}
+
+JSBeam.sendMessage = function ()
+{	
+	var chatMsg = document.getElementById('chatMsg');
+	var msg = chatMsg.value;
+	if(msg != "")
+	{
+		JSBroadcast.sendMessage(JSBeam.key, msg);
+		chatMsg.value = ""; //TODO TIMER
+		chatMsg.focus();
+
+		//if($('#chatWindow').html() == "")
+		//{
+		//	JSBeam.write(msg, false);
+		//}
+		//else
+		//{
+		//	JSBeam.write(msg, true);
+		//}
+		
+		//JSChat.scrollDown();
+	}
+}
+
 
 function runChat()
 {
-	JSBroadcast.run(100);
+	document.getElementById('chatMsg').setAttribute('autocomplete', 'off');
+	JSBroadcast.run(300);
 }
